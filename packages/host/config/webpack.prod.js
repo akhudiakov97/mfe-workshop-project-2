@@ -3,7 +3,7 @@ const commonConfig = require('./webpack.common');
 const { merge } = require('webpack-merge');
 const packageJson = require('../package.json');
 
-const domain = 'CLOUDFRONT_GOES_HERE';
+const domain = 'https://d21y8caclyo6wc.cloudfront.net';
 
 const prodConfig = {
     mode: 'production',
