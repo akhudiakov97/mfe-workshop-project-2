@@ -32,13 +32,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
   margin: theme.spacing(1, 1.5),
 }));
 
-export default function Header({ signedIn, onSignOut }) {
-  const onClick = () => {
-    if (signedIn && onSignOut) {
-      onSignOut();
-    }
-  };
-
+export default function Header() {
   return (
     <React.Fragment>
       <GlobalStyles />
@@ -53,15 +47,6 @@ export default function Header({ signedIn, onSignOut }) {
           >
             FW Days MFE Workshop
           </Typography>
-          <StyledButton
-            color="primary"
-            variant="outlined"
-            component={RouterLink}
-            to={signedIn ? '/' : '/auth/signin'}
-            onClick={onClick}
-          >
-            {signedIn ? 'Logout' : 'Login'}
-          </StyledButton>
         </StyledToolbar>
       </StyledAppBar>
     </React.Fragment>
