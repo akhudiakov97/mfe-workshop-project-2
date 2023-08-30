@@ -38,7 +38,7 @@ const StyledCard = styled(Card)({
 });
 
 const StyledCardMedia = styled(CardMedia)({
-  paddingTop: '56.25%', // 16:9
+  paddingTop: '56.25%',
 });
 
 const StyledCardContent = styled(CardContent)({

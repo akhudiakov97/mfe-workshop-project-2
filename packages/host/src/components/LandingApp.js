@@ -1,15 +1,33 @@
-import {mount} from 'landing/LandingApp';
+import { mount } from "landing/LandingApp";
+import React, { useRef, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import React, {useRef, useEffect} from 'react';
+export const LandingApp = () => {
+  const ref = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const onParentNavigateRef = useRef(null);
 
-export const LandingApp = ()=> {
-    const ref = useRef(null);
+  useEffect(() => {
+    const { onParentNavigate } = mount(ref.current, {
+      onNavigate: ({ pathname }) => {
+        console.log('pathname', pathname);
+        if(pathname !== location.pathname){
+          navigate(pathname);
+        }
+      },
+    });
+    onParentNavigateRef.current = onParentNavigate;
+  }, []);
 
-    useEffect(()=>{
-        mount(ref.current);
-    }, []);
+  useEffect(()=>{
+    const onParentNavigate = onParentNavigateRef.current;
+    if(onParentNavigate){
+      onParentNavigate({pathname: location.pathname});
+    }
+  },[location.pathname])
 
-    return <div ref={ref}/>
-}
+  return <div ref={ref} />;
+};
 
 export default LandingApp;
