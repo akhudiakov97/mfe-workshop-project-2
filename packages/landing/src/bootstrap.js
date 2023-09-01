@@ -1,24 +1,33 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, MemoryRouter } from "react-router-dom";
+import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import { createMemoryHistory } from 'history';
 import App from "./App";
 
-const mount = (el, { onNavigate, defaultHistory }) => {
-  const Router = defaultHistory ? BrowserRouter : MemoryRouter;
+const mount = (el, { onNavigate, isDevMode }) => {
+  const history = createMemoryHistory();
+
   const root = createRoot(el);
   root.render(
-    <Router>
-      <App onNavigate={onNavigate} />
-    </Router>
+    isDevMode ? (
+      <BrowserRouter>
+        <App onNavigate={onNavigate} />
+      </BrowserRouter>
+    ) : (
+      <HistoryRouter history={history}>
+        <App onNavigate={onNavigate} />
+      </HistoryRouter>
+    )
   );
 
   return {
     onParentNavigate({ pathname: nextPathname }) {
-      root.render(
-        <Router basename={nextPathname}>
-          <App onNavigate={onNavigate} />
-        </Router>
-      );
+      const { pathname } = history.location;
+
+      if (pathname !== nextPathname) {
+        history.push(nextPathname);
+      }
     },
   };
 };
@@ -27,7 +36,7 @@ if (process.env.NODE_ENV === "development") {
   const devRoot = document.querySelector("#_landing-dev-root");
 
   if (devRoot) {
-    mount(devRoot, { defaultHistory: true });
+    mount(devRoot, { isDevMode: true });
   }
 }
 
