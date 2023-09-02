@@ -9,7 +9,6 @@ export default function ({ onNavigate }) {
   const location = useLocation();
 
   useEffect(() => {
-    console.log('location pathname landing', location.pathname);
     if (onNavigate) {
       onNavigate({ pathname: location.pathname });
     }

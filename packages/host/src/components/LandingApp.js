@@ -11,7 +11,6 @@ export const LandingApp = () => {
   useEffect(() => {
     const { onParentNavigate } = mount(ref.current, {
       onNavigate: ({ pathname }) => {
-        console.log('pathname', pathname);
         if(pathname !== location.pathname){
           navigate(pathname);
         }
