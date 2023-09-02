@@ -1,31 +1,13 @@
-const HTMLWebpackPlugin = require('html-webpack-plugin');
-const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const singleSpaDefaults = require("webpack-config-single-spa-react");
+const { merge } = require("webpack-merge");
 const commonConfig = require('./webpack.common');
-const { merge } = require('webpack-merge');
-const packageJson = require('../package.json');
 
-const devConfig = {
-    mode: 'development',
-    devServer: {
-        port: 8081,
-        historyApiFallback: {
-            index: 'index.html',
-        },
-    },
-    plugins: [
-        new ModuleFederationPlugin({
-            name: 'landing',
-            filename: 'remoteEntry.js',
-            exposes: {
-                './LandingApp': './src/bootstrap'
-            },
-            shared: packageJson.dependencies
-        }),
-        new HTMLWebpackPlugin({
-            template: './public/index.html'
-        }),
-    ]
+module.exports = (webpackConfigEnv, argv) => {
+  const defaultConfig = singleSpaDefaults({
+    orgName: "test",
+    projectName: "landing",
+    webpackConfigEnv,
+    argv,
+  });
+  return merge(defaultConfig, commonConfig);
 };
-
-
-module.exports = merge(commonConfig, devConfig);
